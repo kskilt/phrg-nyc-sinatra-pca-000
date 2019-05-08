@@ -1,35 +1,41 @@
 # frozen_string_literal: true
 
 class LandmarksController < ApplicationController
-
-  get '/landmarks/new' do #create
-    erb :'landmarks/new'
-  end
-
-  post '/landmarks' do # save
-    Landmark.create(
-      name: params[:landmark][:name],year_completed: params[:landmark][:year_completed])
-  end
-
-  get '/landmarks' do # list all
+  get "/landmarks" do # index action
+    @landmarks = Landmark.all
     erb :'landmarks/index'
   end
 
-  get '/landmarks/:id' do # show action
-    @landmark =Landmark.find(params[:id])
-    erb :'landmarks/show'
+  get "/landmarks/new" do # new action
+    erb :'landmarks/new'
   end
 
-  get '/landmarks/:id/edit' do # edit action
-    @landmark =Landmark.find(params[:id])
-    erb :'landmarks/edit'
+  post "/landmarks" do # create action
+    Landmark.create(
+      name: params[:landmark][:name],
+      year_completed: params[:landmark][:year_completed]
+    )
   end
 
-  patch '/landmarks/:id/edit' do # update action
-    landmark =Landmark.find(params[:id])
-    landmark.update(name: params[:landmark][:name], year_completed: params[:landmark][:year_completed])
+  get "/landmarks/:id" do # show action
+    # binding.pry
+    @landmark = Landmark.find(params[:id])
+    erb :'/landmarks/show'
+  end
+
+  get "/landmarks/:id/edit" do # edit action
+    @landmark = Landmark.find(params[:id])
+    # binding.pry
+    erb :'/landmarks/edit'
+  end
+
+  patch "/landmarks/:id/edit" do # update action
+    landmark = Landmark.find(params[:id])
+    landmark.update(
+      name: params[:landmark][:name],
+      year_completed: params[:landmark][:year_completed]
+    )
     # binding.pry
     redirect "/landmarks/#{landmark.id}"
   end
-
 end
